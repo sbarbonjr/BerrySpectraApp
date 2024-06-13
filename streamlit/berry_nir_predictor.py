@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 import joblib
 from sklearn.preprocessing import StandardScaler
 
-model_firmness = joblib.load('models/Firmness (gf)_random_forest_model.pkl')
+model_firmness = joblib.load('streamlit/models/Firmness (gf)_random_forest_model.pkl')
 
-model_acidity = joblib.load('models/Titratable acidity (%)_random_forest_model.pkl')
+model_acidity = joblib.load('streamlit/models/Titratable acidity (%)_random_forest_model.pkl')
 
 def predict_brix(dataset):
-    model_brix = joblib.load('models/SSC (°Brix)_random_forest_model.pkl')
+    model_brix = joblib.load('streamlit/models/SSC (°Brix)_random_forest_model.pkl')
     # Predict using the loaded model
     X = dataset.values
     y_hat = model_brix.predict(X)
