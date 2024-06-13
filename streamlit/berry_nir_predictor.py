@@ -55,14 +55,19 @@ def process_data(df):
     features = df['Absorbance'].values.reshape(-1, 1)
     scaler = StandardScaler()
     scaled_features = scaler.fit_transform(features)
-    
+
+        
     # Display predictions
     st.subheader("Predicted Components")
     st.write(f"Predicted BRIX Content: {predict_brix:.2f} %")
     # st.write(f"Predicted Acid Content: {acid_prediction.mean():.2f} %")
 
 def main():
-    st.title("BerrySpectraApp")
+    st.title("Berry Spectra App")
+    st.subheader("Coordinator: Dr. Raúl Siche Jara")
+    st.subheader("FONDECYT: 75765")
+
+
     st.write("Upload a CSV or Excel file containing berry NIR spectra data for processing and prediction.")
 
     uploaded_file = st.file_uploader("Choose a file", type=["csv", "xlsx"])

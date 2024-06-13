@@ -40,7 +40,7 @@ def get_pls_cv (X_train, y_train, X_test, y_test, qtd_LV):
 
   return(X_train_transformed, X_test_transformed, y_train, y_test, pls)
 
-def create_model(target, preprocessing, best_LV, perc_isoF, seed_isoF):
+def create_model(target, preprocessing, best_LV, perc_isoF, seed_isoF, save_mean_spectra=False):
     #Target: SSC (°Brix)
     #PLS: SIM
     #Training Size: 453
@@ -60,6 +60,14 @@ def create_model(target, preprocessing, best_LV, perc_isoF, seed_isoF):
     
     if perc_isoF>0:
         dataset = outlier_removal(dataset, perc_isoF, seed_isoF)
+
+    if save_mean_spectra:
+
+        mean_spectra = pd.DataFrame(dataset.iloc[:,3:231].mean().round(4))
+        mean_spectra.index = mean_spectra.index.astype(int)
+        mean_spectra.columns = ["Absorbance"]
+        mean_spectra.to_csv(PATH+"/MeanSpectra_"+target+".csv", header=True, index=True, index_label=["Wavelength"])
+
     
     y, X =  shuffle(pd.DataFrame(dataset[target]),
                    pd.DataFrame(dataset.iloc[:,3:231]), random_state=42)
@@ -83,11 +91,10 @@ def create_model(target, preprocessing, best_LV, perc_isoF, seed_isoF):
     print('CAL - MAE: %.3f' % mean_mae)
 
     joblib.dump(model, PATH+"/"+target+'_random_forest_model.pkl')
-      
 
 
-create_model("SSC (°Brix)", "Norm + SNV + 1st", 11, 0.1, 42)
-create_model("Firmness (gf)", "Norm + 2nd", 11, 0.05, 42)
-create_model("Titratable acidity (%)", "Norm + 2nd", 0, 0, 0)
+create_model("SSC (°Brix)", "Norm + SNV + 1st", 11, 0.1, 42, True)
+create_model("Firmness (gf)", "Norm + 2nd", 11, 0.05, 42, True)
+create_model("Titratable acidity (%)", "Norm + 2nd", 0, 0, 0, True)
 
     
