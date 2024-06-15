@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import joblib
 import os
 
-from core.modeling import normalize_spectral_data, snv, first_derivative
+from core.modeling import normalize_spectral_data, snv, first_derivative, second_derivative
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 #model_firmness = joblib.load('models/Firmness (gf)_random_forest_model.pkl')
@@ -27,11 +27,45 @@ def predict_brix(X):
     pls_ = joblib.load(PATH+"/models/"+target+'_PLS.pkl')
     lv_features = pls_.transform(dataset_)
 
-    model_brix = joblib.load(PATH+'/models/SSC (°Brix)_random_forest_model.pkl')
+    model = joblib.load(PATH+'/models/'+target+'_random_forest_model.pkl')
     # Predict using the loaded model of a RandomForestRegressor
-    y_hat = model_brix.predict(lv_features)
+    y_hat = model.predict(lv_features)
     #print('y_hat', y_hat)
     return y_hat.mean()
+
+
+def predict_firm(X):
+    target = 'Firmness (gf)'
+    max_val = joblib.load(PATH+"/models/"+target+'_max_val_norm.pkl')
+    min_val = joblib.load(PATH+"/models/"+target+'_min_val_norm.pkl')
+    dataset_, _, _ = normalize_spectral_data(X, max_val, min_val)
+
+    dataset_ = second_derivative(dataset_)#
+
+    pls_ = joblib.load(PATH+"/models/"+target+'_PLS.pkl')
+    lv_features = pls_.transform(dataset_)
+
+    model = joblib.load(PATH+'/models/'+target+'_random_forest_model.pkl')
+    # Predict using the loaded model of a RandomForestRegressor
+    y_hat = model.predict(lv_features)
+    #print('y_hat', y_hat)
+    return y_hat.mean()
+
+def predict_ta(X):
+    target = 'Titratable acidity (%)'
+    max_val = joblib.load(PATH+"/models/"+target+'_max_val_norm.pkl')
+    min_val = joblib.load(PATH+"/models/"+target+'_min_val_norm.pkl')
+    dataset_, _, _ = normalize_spectral_data(X, max_val, min_val)
+
+    dataset_ = second_derivative(dataset_)#
+
+    model = joblib.load(PATH+'/models/'+target+'_random_forest_model.pkl')
+    # Predict using the loaded model of a RandomForestRegressor
+    y_hat = model.predict(dataset_)
+    #print('y_hat', y_hat)
+    return y_hat.mean()
+
+
 
 
 def validate_csv(file):
@@ -85,7 +119,9 @@ def process_data(df):
 
     # Display predictions
     st.subheader("Predicted Components")
-    st.write(f"Predicted BRIX Content: {predict_brix(df_sample):.2f} %")
+    st.write(f"Predicted SSC (°Brix) content: {predict_brix(df_sample):.2f} %")
+    st.write(f"Predicted Firmness(gf) content: {predict_firm(df_sample):.2f} %")
+    st.write(f"Predicted Titratable acidity (%) content: {predict_ta(df_sample):.2f} %")
 
 def main():
     st.title("Berry Spectra App")

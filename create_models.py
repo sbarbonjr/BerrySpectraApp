@@ -63,8 +63,6 @@ def create_model_scratch(target, preprocessing, best_LV, perc_isoF, seed_isoF, s
         joblib.dump(max_val, PATH+"/"+target+'_max_val_norm.pkl')
         joblib.dump(min_val, PATH+"/"+target+'_min_val_norm.pkl')
 
-
-
     if 'SNV' in preprocessing:
         print('SNV')
         dataset_, mean_spectrum_snv, mean_spectrum_std = snv(dataset_, None, None)
@@ -73,6 +71,10 @@ def create_model_scratch(target, preprocessing, best_LV, perc_isoF, seed_isoF, s
 
     if '1st' in preprocessing:
         print('1st')
+        dataset_ = first_derivative(dataset_)
+
+    if '2st' in preprocessing:
+        print('2st')
         dataset_ = first_derivative(dataset_)
     
     if perc_isoF>0:
@@ -160,5 +162,7 @@ def create_model(target, preprocessing, best_LV, perc_isoF, seed_isoF, save_mean
 
 #create_model_scratch("SSC (°Brix)", "Norm + SNV + 1st", 11, 0.1, 42, True)
 
-create_model_scratch("SSC (°Brix)", "Norm + SNV + 1st", 11, 0, 42, True)
+#create_model_scratch("SSC (°Brix)", "Norm + SNV + 1st", 11, 0, 42, True)
+#create_model_scratch("Firmness (gf)", "Norm + 2nd", 11, 0.05, 42, True)
+create_model_scratch("Titratable acidity (%)", "Norm + 2nd", 0, 0, 0, True)
     
