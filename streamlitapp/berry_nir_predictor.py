@@ -119,9 +119,9 @@ def process_data(df):
 
     # Display predictions
     st.subheader("Predicted Components")
-    st.write(f"Predicted SSC (°Brix) content: {predict_brix(df_sample):.2f} %")
-    st.write(f"Predicted Firmness(gf) content: {predict_firm(df_sample):.2f} %")
-    st.write(f"Predicted Titratable acidity (%) content: {predict_ta(df_sample):.2f} %")
+    st.write(f"Predicted SSC (°Brix) content: {predict_brix(df_sample):.2f} % (R² 0.77 / RMSE 1.12)")
+    st.write(f"Predicted Firmness(gf) content: {predict_firm(df_sample):.2f} % (R² 0.92 / RMSE 0.49)")
+    st.write(f"Predicted Titratable acidity (%) content: {predict_ta(df_sample):.2f} % (R² 0.59 / RMSE 149.70)")
 
 def main():
     st.title("Berry Spectra App")
@@ -137,7 +137,8 @@ def main():
     st.markdown(markdown_text, unsafe_allow_html=True)
 
     st.subheader("Load Data Spectrum")
-    st.write("Upload a CSV or Excel file containing berry NIR spectra data for processing and prediction.")
+    st.write("Upload a CSV or Excel file containing berry NIR spectra data for processing and prediction. :")
+    st.write("Example: [link](https://github.com/sbarbonjr/BerrySpectraApp/blob/master/datasets/MeanSpectra_SSC%20(%C2%B0Brix)_TEST_7%2C2.csv)")
 
     uploaded_file = st.file_uploader("Choose a file", type=["csv", "xlsx"])
     
