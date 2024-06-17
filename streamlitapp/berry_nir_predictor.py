@@ -119,9 +119,9 @@ def process_data(df):
 
     # Display predictions
     st.subheader("Predicted Components")
-    st.write(f"Predicted SSC (°Brix) content: {predict_brix(df_sample):.2f} % (R² 0.77 / RMSE 1.12)")
-    st.write(f"Predicted Firmness(gf) content: {predict_firm(df_sample):.2f} % (R² 0.92 / RMSE 0.49)")
-    st.write(f"Predicted Titratable acidity (%) content: {predict_ta(df_sample):.2f} % (R² 0.59 / RMSE 149.70)")
+    st.write(f"Predicted SSC (°Brix) content: {predict_brix(df_sample):.2f} % (R² 0.84 / RMSE 1.01)")
+    st.write(f"Predicted Firmness(gf) content: {predict_firm(df_sample):.2f} % (R² 0.84 / RMSE 117.40)")
+    st.write(f"Predicted Titratable acidity (%) content: {predict_ta(df_sample):.2f} % (R² 0.99 / RMSE 0.35)")
 
 def main():
     st.title("Berry Spectra App")
